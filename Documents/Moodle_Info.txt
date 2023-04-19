@@ -1,0 +1,34 @@
+Sie bearbeiten ein Visualisierungsprojekt in Teams von 3-4 Personen. Bilden Sie ein Team und tragen Sie Ihre Namen in der unten verlinkten Liste ein.
+
+Ziel der Arbeit ist, einen selbstgewählten Datensatz zu analysieren und die Erkenntnisse mithilfe von Visualisierungen effektiv zu kommunizieren. Dabei können Sie die Form des Visualisierungsproduktes wählen, von auf Präsentationsfolien eingebetteten Graphiken, über einen digitalen Artikel oder Blog-Post mit Visualisierungen, bis hin zu einer Webseite oder Dashboard-App.
+
+Sie dürfen neue Daten erheben oder bereits bestehende Datensätze verwenden. Die Anforderungen an den Datensatz, der auch aus einer Kombination von (möglicherweise kleineren) Datensätzen bestehen kann, sind:
+
+    mindestens 100 Beobachtungen 
+    mindestens 5 Merkmale
+    eine Kombination aus numerischen und kategorischen Merkmalen
+    im Kurs anderweitig benutzte oder davon abgeleitete Daten, dürfen nicht verwendet werden
+
+Falls Sie unsicher sind, ob der von Ihnen gewählte Datensatz den Anforderungen genügt, besprechen Sie es mit den Kursverantwortlichen. Nachstehend finden Sie als Orientierung einen Link zu einer Übersicht von möglichen Datenquellen. Die Daten für Ihr Projekt müssen aber nicht zwingend aus dieser Auswahl stammen.
+
+Die Datenprozessierungen, Analysen und Visualisierungen müssen technisch nachvollziehbar und reproduzierbar sein im Rahmen des eingereichten Datenberichtes, Codes (inkl. Dokumentation) und der Präsentationsfolien. Werden andere Tools als Python und die im Kurs vorgestellten Frameworks verwendet, muss dies begründet werden, beispielsweise mit fehlender Funktionalität. Beachten Sie, dass dies mit interaktiver Visualisierungs-Software, wie z.B. Microsoft Excel, nur schwer realisierbar ist.
+
+Der Leistungsnachweis besteht aus:
+
+    Abgabe bis 13.06.2023, 24:00 von 
+        Datenbericht
+        Code und dazugehöriger Dokumentation 
+        Präsentationsfolien
+        falls zutreffend: Für sich stehendes Visualisierungsprodukt, wie z.B. Webseite oder Link zu bereitgestellter App
+    einer mündlichen Gruppenpräsentation vor Ort während der regulären Prüfungsperiode. Dauer: 15 Minuten.
+
+
+Nachstehen finden Sie ein Template für das Konzept ihres Projektes. Dieses dient der Strukturierung Ihrer Projektidee und soll als Grundlage für die Diskussionen in den Coaching-Sessions genutzt werden.
+
+Folgende Unterrichtseinheiten können für die Arbeit am Projekt und Coaching-Sessions genutzt werden:
+
+    27.4. Praktikum 1 Lektion: Coaching zu Konzeptentwicklung
+    4.5. Praktikum 1 Lektion: Tool-Coaching
+    11.5. 
+        Vorlesung: Wahlweise Führung im Usability Lab oder selbständige Arbeit am Projekt
+        Praktikum: Coaching Projekt
