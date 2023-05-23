@@ -11,15 +11,15 @@ from streamlit_folium import st_folium
 import altair as alt
 
 
-APP_TITLE = 'Mental health'
+APP_TITLE = 'The Name OF THe PRoject'
 APP_SUB_TITLE = 'Source: asdfg'
 st.set_page_config(APP_TITLE)
 st.title(APP_TITLE)
-st.caption(APP_SUB_TITLE)
+
 years = ["2015", "2016","2017"]
-
 happines_data = {}
-
+st.header('The name of the graph')
+st.subheader('description about the graph')
 
 def get_data():
     # happines_data = {}
@@ -114,23 +114,16 @@ country_list = [''] + list(df['Country'].unique())
 country_list.sort()
 country_index = country_list.index(country_name) if country_name and country_name in country_list else 0
 st.sidebar.selectbox('Country', country_list, country_index)
+st.caption(APP_SUB_TITLE)
 
 
-#df_2 = pd.read_csv('D:\Bachelors\Semester2\VDSS\project_folder\VDSS_Visualisierungsprojekt\clean_data\cleaned_data_global_mental_health.csv',usecols=[8,9])
-#df_3 = df_2.groupby('Education').count()
-#st.bar_chart(df_3,y ='Country_wealth' )
 
-#bar_chart = alt.Chart(df_2).mark_bar().encode()
-#st.altair_chart(bar_chart,use_container_width=True)
-#labelss = df_2['Country_wealth']
-#values1  = df_2['Education']
-#labelsss = df_2['Education']
-#values2  = df_2['Country_wealth']
-#fig = go.Figure(data=[
-   # go.Bar(name='Gruppe 1', x=labelss, y=values1),
-  #  go.Bar(name='Gruppe 2', x=labelsss, y=values2)
-#])
-#fig.update_layout(barmode='stack')
 
-# Anzeigen des Diagramms in der Streamlit-App
-#st.plotly_chart(fig)
+
+st.header('The name of the graph')
+st.subheader('description about the graph')
+
+fig = px.treemap(df,path=[px.Constant('World'),'Region','Country'], values='Happiness Score',color='Health (Life Expectancy)',hover_data=['Happiness Rank'],color_continuous_scale='RdBu',branchvalues = 'total')
+fig.update_layout(margin = dict(t=5, l=2.5, r=2.5, b=2.5))
+st.plotly_chart(fig)
+st.caption('source of the graph maybe')
