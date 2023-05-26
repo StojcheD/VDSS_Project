@@ -89,7 +89,7 @@ choropleth = folium.Choropleth(
         fill_opacity=0.5,
         highlight=True,
         fill_color="YlGn",
-        legend_name="Unemployment Rate (%)"
+        legend_name="Income Status"
     )
 choropleth.geojson.add_child(
     folium.features.GeoJsonTooltip(tooltips, labels=False)
@@ -112,7 +112,8 @@ else:
 #country_index = country_list.index(country_name) if country_name and country_name in country_list else 0
 #st.sidebar.selectbox('Country', country_list, country_index)
 st.caption(APP_SUB_TITLE)
-
+expander = st.expander("See Conclusions")
+expander.write("something")
 #secound grapf
 st.header('Treemap')
 st.subheader('description about the graph')
@@ -129,7 +130,8 @@ fig = px.treemap(df,path=[px.Constant('World'),'Region','Country'], values='Happ
 fig.update_layout(margin = dict(t=5, l=2.5, r=2.5, b=2.5))
 st.plotly_chart(fig)
 st.caption('source of the graph maybe')
-
+expander = st.expander("See Conclusions")
+expander.write("something")
 #3rd graph
 st.header('Correlation matrix')
 st.subheader('description about the graph')
@@ -147,4 +149,7 @@ sns.heatmap(df_corr, ax=ax,cmap="Blues",annot=True)
 st.write(fig)
 st.caption('Source: aaaa')
 
+
+expander = st.expander("See Conclusions")
+expander.write("something")
 
