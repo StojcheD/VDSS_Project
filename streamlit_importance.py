@@ -69,19 +69,42 @@ def main():
     st.write("The bar plots below show the count of 'Yes' and 'No' in Self Experience by Country Wealth:")
     st.pyplot(plt)
 
+
 def get_importance_table(df):
     importance_counts = df["Importance"].value_counts(normalize=True) * 100
 
-    # Create a new DataFrame to display the results
-    importance_table = pd.DataFrame({
-        "Importance": importance_counts.index,
-        "Percentage": importance_counts.values
-    })
+    # Get unique regions from the DataFrame and sort them alphabetically
+    regions = sorted(df["Region"].unique())
 
-    # Sort the table by the "Importance" column
-    importance_table = importance_table.sort_values("Percentage")
+    # Create a new DataFrame to display the results
+    importance_table = pd.DataFrame({"Region": regions})
+
+    # Initialize columns with zeros in the desired sequence
+    columns = ["Region", "More important", "As important", "Less important"]
+    for column in columns[1:]:
+        importance_table[column] = 0
+
+    # Fill the table with percentage values per region
+    for region in regions:
+        region_df = df[df["Region"] == region]
+        region_counts = region_df["Importance"].value_counts(normalize=True) * 100
+        for index, count in region_counts.items():
+            importance_table.loc[importance_table["Region"] == region, index] = count
+
+    # Sort the table by the "Region" column in alphabetical order
+    importance_table = importance_table.sort_values("Region")
+
+    # Add summary line
+    importance_table.loc[len(importance_table)] = [
+        "Summary",
+        importance_table["More important"].mean(),
+        importance_table["As important"].mean(),
+        importance_table["Less important"].mean()
+    ]
 
     return importance_table
+
+
 
 if __name__ == "__main__":
     main()
