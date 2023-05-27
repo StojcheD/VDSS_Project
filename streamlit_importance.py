@@ -99,12 +99,11 @@ def get_importance_table(df):
         "Summary",
         importance_table["More important"].mean(),
         importance_table["As important"].mean(),
-        importance_table["Less important"].mean()
+        importance_table["Less important"].mean(),
+        importance_table["DK/Refused"].mean()
     ]
 
     return importance_table
-
-
 
 if __name__ == "__main__":
     main()
