@@ -17,7 +17,7 @@ APP_SUB_TITLE = 'Source: asdfg'
 st.set_page_config(APP_TITLE)
 st.title(APP_TITLE)
 
-years = ["2015", "2016"]
+years = ["2015", "2016","2017","2018","2019","2020","2021"]
 happines_data = {}
 st.header('World map')
 st.subheader('description about the graph')
@@ -49,16 +49,23 @@ tooltips = ["ADMIN"]
 
 
 selectedYear = st.selectbox('Select the year for Happines data',years)
+st.write("The data is from the year:",selectedYear)
 happines_data[selectedYear] = pd.read_csv(f"D:\Bachelors\Semester2\VDSS\project_folder\VDSS_Visualisierungsprojekt\clean_data\{selectedYear}.csv")
 
 countries = happines_data[selectedYear]["Country"].unique()
 df = happines_data[selectedYear]
-st.write(selectedYear)
 df_new = df.set_index("Country")
 
+col1, col2, col3, col4 = st.columns(4)
+with col1:
+    happinesScore = st.checkbox("Happines Score", value=True)
+with col2:
+    economyScore = st.checkbox("Economy Score", value=True)
+with col3:
+    socialSupport = st.checkbox("Social Support", value=True)
+with col4:
+    Freedom = st.checkbox("Freedom to make life choices", value=True)
 
-happinesScore = st.checkbox("Happines Score", value = True)
-economyScore = st.checkbox("Economy Score", value = True)
 if happinesScore:
     labels.append("Happiness Score")
     tooltips.append("happinesstatus")
@@ -75,7 +82,25 @@ if economyScore:
         if feature["properties"]["ADMIN"] in countries:
             feature["properties"]["economyScore"] = f"GDP score {selectedYear}: {df_new.loc[feature['properties']['ADMIN']]['Economy (GDP per Capita)']}"
         else:
-            feature["properties"]["economyScore"] = "No happines Data"
+            feature["properties"]["economyScore"] = "No economy Data"
+
+if socialSupport:
+    labels.append("Social support")
+    tooltips.append("socialSupport")
+    for feature in geo["features"]:
+        if feature["properties"]["ADMIN"] in countries:
+             feature["properties"]["socialSupport"] = f"Social support {selectedYear}: {df_new.loc[feature['properties']['ADMIN']]['Social support']}"
+        else:
+            feature["properties"]["socialSupport"] = "No Social Support Data"
+
+if socialSupport:
+    labels.append("Freedom to make life choices")
+    tooltips.append("Freedom")
+    for feature in geo["features"]:
+        if feature["properties"]["ADMIN"] in countries:
+             feature["properties"]["Freedom"] = f"Freedom to make life choices {selectedYear}: {df_new.loc[feature['properties']['ADMIN']]['Freedom to make life choices']}"
+        else:
+            feature["properties"]["Freedom"] = "No Data"
 #first graph
 map = folium.Map(zoom_start=4, scrollWheelZoom=False, tiles='CartoDB positron')
 
