@@ -19,8 +19,9 @@ st.title(APP_TITLE)
 
 years = ["2015", "2016","2017","2018","2019","2020","2021"]
 happines_data = {}
-st.header('World map')
-st.subheader('description about the graph')
+st.header('Happy people around the world')
+st.write('Higher incomes lead to more happy faces. The countries with a higher economic score are more happy than the countries with low scores.'
+         ' The freedom of choice and social support has a mixed effect on the happiness index depending on the country. The map shows the countries happiness score with economic, social support and freedom to make life choices score alongside the income for 7 years.')
 
 def get_data():
     # happines_data = {}
@@ -137,8 +138,9 @@ else:
 #country_index = country_list.index(country_name) if country_name and country_name in country_list else 0
 #st.sidebar.selectbox('Country', country_list, country_index)
 st.caption(APP_SUB_TITLE)
-expander = st.expander("See Conclusions")
-expander.write("something")
+expander = st.expander("Conclusions")
+expander.write("The top five positions in the happiness score are taken up by the Nordic countries through out the seven years with Switzerland a non-Nordic country taking up top places in these years as well."
+               " However, the country GDP doesn't guarantee happiness for all as it is the case in India, where the GDP score is among the highest while it's happiness score is among the last 20, it is most probably due to the unequal distribution of wealth. Afghanistan  due to prolonged wars remained in the lowest ranks in the happiness index.")
 #secound grapf
 st.header('Treemap')
 st.subheader('description about the graph')
@@ -158,13 +160,11 @@ st.caption('source of the graph maybe')
 expander = st.expander("See Conclusions")
 expander.write("something")
 #3rd graph
-st.header('Correlation matrix')
-st.subheader('description about the graph')
+st.header('Correlation between different Human Development Indices')
+st.write("Higher education leads to higher country wealth, however, interestingly, higher education doesn't provides understanding of mental health importance, on the contrary has a negative effect. Also, higher education leads to lower mental health self-experiences.")
 
-df1 = pd.read_csv('D:\Bachelors\Semester2\VDSS\project_folder\VDSS_Visualisierungsprojekt\clean_data\cleaned_data_global_mental_health.csv',usecols=[3,4, 8, 9])
+df1 = pd.read_csv('D:\Bachelors\Semester2\VDSS\project_folder\VDSS_Visualisierungsprojekt\clean_data\cleaned_data_global_mental_health.csv',usecols=[2,3,7,8])
 df1.drop(df1[df1['Education'] == '99'].index, inplace = True)
-df1.drop(df1[df1['Importance'] == 'DK/Refused'].index, inplace = True)
-df1.drop(df1[df1['Self_experience'] == 'DK/Refused'].index, inplace = True)
 df1.drop(df1[df1['Self_experience'] == ' '].index, inplace = True)
 mapping_dict = {'Elementary or less': 0,'Secondary': 1,'Tertiary': 2, 'High income': 3,'Upper-middle income': 2,'Lower-middle income': 1,'Low income':0,'Less important':0,'As important':1,'More important':2,'Yes':1,'No':0}
 df1 = df1.replace(mapping_dict)
@@ -176,5 +176,6 @@ st.caption('Source: aaaa')
 
 
 expander = st.expander("See Conclusions")
-expander.write("something")
+expander.write("The mental health importance is correlated with people's self-experience. The more important the mental health is the more people are going to self-experience it. However, both these indices are negatively correlated with country wealth and education."
+               " While country wealth and education both are correlated among themselves. ")
 
