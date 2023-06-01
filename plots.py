@@ -10,6 +10,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import streamlit as st
 from matplotlib_venn import venn3
+import numpy as np
 
 
 def main():
@@ -29,6 +30,23 @@ def main():
     st.title("Venn Diagram")
     st.write("The Venn diagram below shows the overlap of mental illnesses in Malaysia:")
     st.pyplot(get_venn_diagram(df2))
+    
+    st.title("Bar Plot 2")
+    st.write("The barplot below shows the amount of men and women there are and how many suffer of a mental illness.")
+    st.pyplot(get_gender_barplot(df2))
+    
+    st.title("Barplot percentage")
+    st.write("Below is a barplot, that shows the percentage of how many men and women have a menatl illness.")
+    st.pyplot(get_gender_percentage_barplot(df2))
+
+    st.title("Stacked barplot")
+    st.write("Wich major has what illness.")
+    st.pyplot(get_stacked_barplot_by_major_all(df2))
+
+    st.title("Stacked barplot 2")
+    st.write("Wich major has what illness without those that have none.")
+    st.pyplot(get_stacked_barplot_by_major_with(df2))
+
 
 def get_importance_table(df):
     importance_counts = df["Importance"].value_counts(normalize=True) * 100
@@ -141,6 +159,158 @@ def get_venn_diagram(df):
              verticalalignment='bottom', fontsize=12)
 
     plt.title("Venn Diagram of Mental Illnesses")
+    plt.show()
+
+    return plt
+
+def get_gender_barplot(df):
+    men_count = len(df[df["Gender"] == "M"])
+    men_mental_illness_count = len(df[(df["Gender"] == "M") & ((df["Depression"] == "Yes") | (df["Anxiety"] == "Yes") | (df["Panic_attacks"] == "Yes"))])
+    women_count = len(df[df["Gender"] == "F"])
+    women_mental_illness_count = len(df[(df["Gender"] == "F") & ((df["Depression"] == "Yes") | (df["Anxiety"] == "Yes") | (df["Panic_attacks"] == "Yes"))])
+
+    labels = ["Men", "Men with Mental Illness", "Women", "Women with Mental Illness"]
+    counts = [men_count, men_mental_illness_count, women_count, women_mental_illness_count]
+
+    colors = ["deepskyblue", "mediumblue", "hotpink", "purple"]
+
+    plt.figure(figsize=(8, 6))
+    bars = plt.bar(labels, counts, color=colors)
+    plt.xlabel("Gender")
+    plt.ylabel("Count")
+    plt.title("Count of Men and Women with Mental Illness")
+
+    # Add count values on top of the bars
+    for i, bar in enumerate(bars):
+        plt.text(bar.get_x() + bar.get_width() / 2, bar.get_height(),
+                 counts[i], ha='center', va='bottom', color='white')
+
+    plt.show()
+
+    return plt
+
+def get_gender_percentage_barplot(df):
+    total_men = len(df[df["Gender"] == "M"])
+    total_women = len(df[df["Gender"] == "F"])
+
+    men_mental_illness_count = len(df[(df["Gender"] == "M") & ((df["Depression"] == "Yes") | (df["Anxiety"] == "Yes") | (df["Panic_attacks"] == "Yes"))])
+    women_mental_illness_count = len(df[(df["Gender"] == "F") & ((df["Depression"] == "Yes") | (df["Anxiety"] == "Yes") | (df["Panic_attacks"] == "Yes"))])
+
+    men_mental_illness_percentage = (men_mental_illness_count / total_men) * 100
+    women_mental_illness_percentage = (women_mental_illness_count / total_women) * 100
+
+    labels = ["Men", "Women"]
+    percentages = [men_mental_illness_percentage, women_mental_illness_percentage]
+
+    colors = ["mediumblue", "purple"]
+
+    plt.figure(figsize=(6, 6))
+    bars = plt.bar(labels, percentages, color=colors)
+    plt.xlabel("Gender")
+    plt.ylabel("Percentage")
+    plt.title("Percentage of Men and Women with Mental Illness")
+
+    # Add percentage values on top of the bars
+    for i, bar in enumerate(bars):
+        plt.text(bar.get_x() + bar.get_width() / 2, bar.get_height(),
+                 f"{percentages[i]:.2f}%", ha='center', va='bottom', color='black')
+
+    plt.ylim(0, 100)  # Set y-axis limit from 0 to 100
+
+    plt.show()
+    
+    return plt
+
+
+def get_stacked_barplot_by_major_all(df):
+    majors = df["Major"].unique()
+    mental_illnesses = ["Depression", "Anxiety", "Panic_attacks"]
+
+    illness_counts = []
+    for major in majors:
+        major_df = df[df["Major"] == major]
+        illness_count = []
+        for illness in mental_illnesses:
+            count = len(major_df[major_df[illness] == "Yes"])
+            illness_count.append(count)
+        illness_counts.append(illness_count)
+
+    bar_width = 0.5
+    bar_positions = np.arange(len(majors))
+
+    colors = ["#1f77b4", "#ff7f0e", "#2ca02c"]  # Blue, Orange, Green
+
+    # Calculate the sum of illness counts for each major
+    illness_sums = np.sum(illness_counts, axis=1)
+
+    # Sort majors based on the sum of illness counts
+    sorted_indices = np.argsort(illness_sums)[::-1]  # Get sorted indices in descending order
+    majors = majors[sorted_indices]
+    illness_counts = np.array(illness_counts)[sorted_indices]
+
+    plt.figure(figsize=(10, 6))
+    bars = []
+    bottom = np.zeros(len(majors))
+
+    for i, illness_count in enumerate(illness_counts.T):
+        bar = plt.bar(bar_positions, illness_count, bottom=bottom, width=bar_width, color=colors[i])
+        bars.append(bar)
+        bottom += illness_count
+
+    plt.xlabel("Major")
+    plt.ylabel("Count")
+    plt.title("Distribution of Mental Illness by Major")
+    plt.xticks(bar_positions, majors, rotation=85)
+    plt.legend(bars, mental_illnesses)
+
+    plt.tight_layout()
+    plt.show()
+    
+    return plt
+
+def get_stacked_barplot_by_major_with(df):
+    majors = df["Major"].unique()
+    mental_illnesses = ["Depression", "Anxiety", "Panic_attacks"]
+
+    illness_counts = []
+    for major in majors:
+        major_df = df[df["Major"] == major]
+        illness_count = []
+        for illness in mental_illnesses:
+            count = len(major_df[major_df[illness] == "Yes"])
+            illness_count.append(count)
+        if any(illness_count):  # Check if any mental illness count is greater than 0
+            illness_counts.append(illness_count)
+
+    bar_width = 0.5
+    bar_positions = np.arange(len(illness_counts))
+
+    colors = ["#1f77b4", "#ff7f0e", "#2ca02c"]  # Blue, Orange, Green
+
+    # Calculate the sum of illness counts for each major
+    illness_sums = np.sum(illness_counts, axis=1)
+
+    # Sort majors based on the sum of illness counts
+    sorted_indices = np.argsort(illness_sums)[::-1]  # Get sorted indices in descending order
+    majors = majors[sorted_indices]
+    illness_counts = np.array(illness_counts)[sorted_indices]
+
+    plt.figure(figsize=(10, 6))
+    bars = []
+    bottom = np.zeros(len(illness_counts))
+
+    for i, illness_count in enumerate(illness_counts.T):
+        bar = plt.bar(bar_positions, illness_count, bottom=bottom, width=bar_width, color=colors[i])
+        bars.append(bar)
+        bottom += illness_count
+
+    plt.xlabel("Major")
+    plt.ylabel("Count")
+    plt.title("Distribution of Mental Illness by Major")
+    plt.xticks(bar_positions, majors, rotation=85)
+    plt.legend(bars, mental_illnesses)
+
+    plt.tight_layout()
     plt.show()
 
     return plt
