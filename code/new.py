@@ -94,7 +94,7 @@ if socialSupport:
         else:
             feature["properties"]["socialSupport"] = "No Social Support Data"
 
-if socialSupport:
+if Freedom:
     labels.append("Freedom to make life choices")
     tooltips.append("Freedom")
     for feature in geo["features"]:
