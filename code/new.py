@@ -4,6 +4,7 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import plotly.express as px
 import plotly.graph_objects as go
+import geopandas as gpd
 import json
 import branca
 import folium
@@ -190,19 +191,30 @@ expander.write("The mental health importance is correlated with people's self-ex
 #graph4
 
 
-
+st.header('Box plot')
 
 df4 = pd.read_csv('D:\Bachelors\Semester2\VDSS\project_folder\VDSS_Visualisierungsprojekt\clean_data\japan_student_mental_health.csv')
-st.header('Box Plot')
+
+# assuming 'age' is ranging from 15 to 100
+age_range = st.slider('Select age range', min_value=17, max_value=31, value=(17, 31))
+
+# filter dataframe by selected age range
+df4 = df4[(df4['Age'] >= age_range[0]) & (df4['Age'] <= age_range[1])]
+
 col1, col2 = st.columns(2)
 with col1:
     International = st.checkbox("International Students", value=True)
 with col2:
     Domestic = st.checkbox("Domestic student ", value=True)
 
-
-
-
+if International and Domestic:
+    df4 = df4
+elif Domestic:
+    df4 = df4.query("inter_dom == 'Dom'")
+elif International:
+    df4 =df4.query("inter_dom == 'Inter'")
+else:
+    df4 = pd.DataFrame(columns = df4.columns)  # Create an empty DataFrame with the same columns as df4
 
 fig1 = px.box(df4, x="Suicide", y="ToDep", color="Gender",points="all")
 fig1.update_traces(quartilemethod="exclusive")
@@ -224,9 +236,10 @@ with tab2:
 with tab3:
     st.write(fig3)
 with tab4:
-    st.write(fig4)
+  st.write(fig4)
 
 expander = st.expander("See Conclusions")
 expander.write("asdda")
 
 #students = {}
+
