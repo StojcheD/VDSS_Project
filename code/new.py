@@ -155,7 +155,11 @@ st.write("The data is from the year:",selectedYear)
 
 fig = px.treemap(df,path=[px.Constant('World'),'Region','Country'], values='Happiness Score',color='Health (Life Expectancy)',hover_data=['Happiness Rank'],color_continuous_scale='RdBu',branchvalues = 'total')
 fig.update_layout(margin = dict(t=5, l=2.5, r=2.5, b=2.5))
-st.plotly_chart(fig)
+tab1, tab2 = st.tabs(["Streamlit theme (default)", "Plotly native theme"])
+with tab1:
+    st.plotly_chart(fig, theme="streamlit", use_container_width=True)
+with tab2:
+    st.plotly_chart(fig, theme=None, use_container_width=True)
 st.caption('source of the graph maybe')
 expander = st.expander("See Conclusions")
 expander.write("something")
@@ -179,3 +183,50 @@ expander = st.expander("See Conclusions")
 expander.write("The mental health importance is correlated with people's self-experience. The more important the mental health is the more people are going to self-experience it. However, both these indices are negatively correlated with country wealth and education."
                " While country wealth and education both are correlated among themselves. ")
 
+
+
+
+
+#graph4
+
+
+
+
+df4 = pd.read_csv('D:\Bachelors\Semester2\VDSS\project_folder\VDSS_Visualisierungsprojekt\clean_data\japan_student_mental_health.csv')
+st.header('Box Plot')
+col1, col2 = st.columns(2)
+with col1:
+    International = st.checkbox("International Students", value=True)
+with col2:
+    Domestic = st.checkbox("Domestic student ", value=True)
+
+
+
+
+
+fig1 = px.box(df4, x="Suicide", y="ToDep", color="Gender",points="all")
+fig1.update_traces(quartilemethod="exclusive")
+
+fig2 = px.box(df4, x="Suicide", y="ToAS", color="Gender",points="all")
+fig2.update_traces(quartilemethod="exclusive")
+
+fig3 = px.box(df4, x="Dep", y="ToDep", color="Gender",points="all")
+fig3.update_traces(quartilemethod="exclusive")
+
+fig4 = px.box(df4, x="Dep", y="ToAS", color="Gender",points="all")
+fig4.update_traces(quartilemethod="exclusive")
+
+tab1, tab2, tab3, tab4 = st.tabs(["Suicide vs ToDep", "Suicide vs ToAS","Depression vs ToDep","Depression vs ToAS"],)
+with tab1:
+    st.write(fig1)
+with tab2:
+    st.write(fig2)
+with tab3:
+    st.write(fig3)
+with tab4:
+    st.write(fig4)
+
+expander = st.expander("See Conclusions")
+expander.write("asdda")
+
+#students = {}
