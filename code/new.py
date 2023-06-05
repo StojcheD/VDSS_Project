@@ -11,7 +11,9 @@ import folium
 from streamlit_folium import st_folium
 import altair as alt
 import seaborn as sns
+import os
 
+path = os.getcwd()
 
 APP_TITLE = 'The Name OF THe PRoject'
 APP_SUB_TITLE = 'Source: asdfg'
@@ -24,13 +26,15 @@ st.header('Happy people around the world')
 st.write('Higher incomes lead to more happy faces. The countries with a higher economic score are more happy than the countries with low scores.'
          ' The freedom of choice and social support has a mixed effect on the happiness index depending on the country. The map shows the countries happiness score with economic, social support and freedom to make life choices score alongside the income for 7 years.')
 
+
+
 def get_data():
     # happines_data = {}
     # for year in years:
-    #     happines_data[year] = pd.read_csv(f"D:\Bachelors\Semester2\VDSS\project_folder\VDSS_Visualisierungsprojekt\clean_data\{year}.csv")
+    #     happines_data[year] = pd.read_csv(path + f"\..\clean_data\{year}.csv")
     #
     # # df = pd.read_csv(
-    # #     'D:\Bachelors\Semester2\VDSS\project_folder\VDSS_Visualisierungsprojekt\clean_data\cleaned_data_global_mental_health.csv',
+    # #     path + '\..\clean_data\cleaned_data_global_mental_health.csv',
     # #     usecols=[0, 1, 9])
     # # df.drop_duplicates(subset=['Country'], keep='first', inplace=True)
     #     Countries = happines_data["2015"]["Country"].unique()
@@ -39,7 +43,7 @@ def get_data():
     # # mapping_inv = {v: k for k, v in mapping.items()}
     #     df_indexed = happines_data[year].set_index("Country")
     with open(
-            "D:\Bachelors\Semester2\VDSS\project_folder\VDSS_Visualisierungsprojekt\clean_data\countries.geojson") as response:
+            path + "\..\clean_data\countries.geojson") as response:
         geo = json.load(response)
 
     return geo ##, Countries, happines_data
@@ -52,7 +56,7 @@ tooltips = ["ADMIN"]
 
 selectedYear = st.selectbox('Select the year for Happines data',years)
 st.write("The data is from the year:",selectedYear)
-happines_data[selectedYear] = pd.read_csv(f"D:\Bachelors\Semester2\VDSS\project_folder\VDSS_Visualisierungsprojekt\clean_data\{selectedYear}.csv")
+happines_data[selectedYear] = pd.read_csv(path + f"\..\clean_data\{selectedYear}.csv")
 
 countries = happines_data[selectedYear]["Country"].unique()
 df = happines_data[selectedYear]
@@ -148,7 +152,7 @@ st.subheader('description about the graph')
 
 data = {}
 selectedYear = st.select_slider("Choose a Year", options=years)
-data[selectedYear] = pd.read_csv(f"D:\Bachelors\Semester2\VDSS\project_folder\VDSS_Visualisierungsprojekt\clean_data\{selectedYear}.csv")
+data[selectedYear] = pd.read_csv(path + f"\..\clean_data\{selectedYear}.csv")
 df = data[selectedYear]
 st.write("The data is from the year:",selectedYear)
 
@@ -168,7 +172,7 @@ expander.write("something")
 st.header('Correlation between different Human Development Indices')
 st.write("Higher education leads to higher country wealth, however, interestingly, higher education doesn't provides understanding of mental health importance, on the contrary has a negative effect. Also, higher education leads to lower mental health self-experiences.")
 
-df1 = pd.read_csv('D:\Bachelors\Semester2\VDSS\project_folder\VDSS_Visualisierungsprojekt\clean_data\cleaned_data_global_mental_health.csv',usecols=[2,3,7,8])
+df1 = pd.read_csv(path + '\..\clean_data\cleaned_data_global_mental_health.csv',usecols=[2,3,7,8])
 df1.drop(df1[df1['Education'] == '99'].index, inplace = True)
 df1.drop(df1[df1['Self_experience'] == ' '].index, inplace = True)
 mapping_dict = {'Elementary or less': 0,'Secondary': 1,'Tertiary': 2, 'High income': 3,'Upper-middle income': 2,'Lower-middle income': 1,'Low income':0,'Less important':0,'As important':1,'More important':2,'Yes':1,'No':0}
@@ -193,7 +197,7 @@ expander.write("The mental health importance is correlated with people's self-ex
 
 st.header('Box plot')
 
-df4 = pd.read_csv('D:\Bachelors\Semester2\VDSS\project_folder\VDSS_Visualisierungsprojekt\clean_data\japan_student_mental_health.csv')
+df4 = pd.read_csv(path + '\..\clean_data\japan_student_mental_health.csv')
 
 # assuming 'age' is ranging from 15 to 100
 age_range = st.slider('Select age range', min_value=17, max_value=31, value=(17, 31))
