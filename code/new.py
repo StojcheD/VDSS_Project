@@ -43,7 +43,7 @@ def get_data():
     # # mapping_inv = {v: k for k, v in mapping.items()}
     #     df_indexed = happines_data[year].set_index("Country")
     with open(
-            path + "\..\clean_data\countries.geojson") as response:
+            'D:\Bachelors\Semester2\VDSS\project_folder\VDSS_Visualisierungsprojekt\clean_data\countries.geojson') as response:
         geo = json.load(response)
 
     return geo ##, Countries, happines_data
@@ -56,7 +56,7 @@ tooltips = ["ADMIN"]
 
 selectedYear = st.selectbox('Select the year for Happines data',years)
 st.write("The data is from the year:",selectedYear)
-happines_data[selectedYear] = pd.read_csv(path + f"\..\clean_data\{selectedYear}.csv")
+happines_data[selectedYear] = pd.read_csv(f"D:\Bachelors\Semester2\VDSS\project_folder\VDSS_Visualisierungsprojekt\clean_data\{selectedYear}.csv")
 
 countries = happines_data[selectedYear]["Country"].unique()
 df = happines_data[selectedYear]
@@ -152,7 +152,7 @@ st.subheader('description about the graph')
 
 data = {}
 selectedYear = st.select_slider("Choose a Year", options=years)
-data[selectedYear] = pd.read_csv(path + f"\..\clean_data\{selectedYear}.csv")
+data[selectedYear] = pd.read_csv(f"D:\Bachelors\Semester2\VDSS\project_folder\VDSS_Visualisierungsprojekt\clean_data\{selectedYear}.csv")
 df = data[selectedYear]
 st.write("The data is from the year:",selectedYear)
 
@@ -168,11 +168,12 @@ with tab2:
 st.caption('source of the graph maybe')
 expander = st.expander("See Conclusions")
 expander.write("something")
+
 #3rd graph
 st.header('Correlation between different Human Development Indices')
 st.write("Higher education leads to higher country wealth, however, interestingly, higher education doesn't provides understanding of mental health importance, on the contrary has a negative effect. Also, higher education leads to lower mental health self-experiences.")
 
-df1 = pd.read_csv(path + '\..\clean_data\cleaned_data_global_mental_health.csv',usecols=[2,3,7,8])
+df1 = pd.read_csv('D:\Bachelors\Semester2\VDSS\project_folder\VDSS_Visualisierungsprojekt\clean_data\cleaned_data_global_mental_health.csv',usecols=[2,3,7,8])
 df1.drop(df1[df1['Education'] == '99'].index, inplace = True)
 df1.drop(df1[df1['Self_experience'] == ' '].index, inplace = True)
 mapping_dict = {'Elementary or less': 0,'Secondary': 1,'Tertiary': 2, 'High income': 3,'Upper-middle income': 2,'Lower-middle income': 1,'Low income':0,'Less important':0,'As important':1,'More important':2,'Yes':1,'No':0}
@@ -195,12 +196,12 @@ expander.write("The mental health importance is correlated with people's self-ex
 #graph4
 
 
-st.header('Box plot')
+st.header('Understanding Mental Health in a University in Tokyo')
 
-df4 = pd.read_csv(path + '\..\clean_data\japan_student_mental_health.csv')
-
+df4 = pd.read_csv("D:\Bachelors\Semester2\VDSS\project_folder\VDSS_Visualisierungsprojekt\clean_data\japan_student_mental_health.csv")
+df4 = df4.query("Academic == 'Under'")
 # assuming 'age' is ranging from 15 to 100
-age_range = st.slider('Select age range', min_value=17, max_value=31, value=(17, 31))
+age_range = st.slider('Select age range', min_value=17, max_value=29, value=(17, 29))
 
 # filter dataframe by selected age range
 df4 = df4[(df4['Age'] >= age_range[0]) & (df4['Age'] <= age_range[1])]
@@ -220,16 +221,16 @@ elif International:
 else:
     df4 = pd.DataFrame(columns = df4.columns)  # Create an empty DataFrame with the same columns as df4
 
-fig1 = px.box(df4, x="Suicide", y="ToDep", color="Gender",points="all")
+fig1 = px.box(df4, x="Suicidal Ideation", y="Depression score", color="Gender")
 fig1.update_traces(quartilemethod="exclusive")
 
-fig2 = px.box(df4, x="Suicide", y="ToAS", color="Gender",points="all")
+fig2 = px.box(df4, x="Suicidal Ideation", y="Acculturative Stress", color="Gender")
 fig2.update_traces(quartilemethod="exclusive")
 
-fig3 = px.box(df4, x="Dep", y="ToDep", color="Gender",points="all")
+fig3 = px.box(df4, x="Depression", y="Depression score", color="Gender")
 fig3.update_traces(quartilemethod="exclusive")
 
-fig4 = px.box(df4, x="Dep", y="ToAS", color="Gender",points="all")
+fig4 = px.box(df4, x="Depression", y="Acculturative Stress", color="Gender")
 fig4.update_traces(quartilemethod="exclusive")
 
 tab1, tab2, tab3, tab4 = st.tabs(["Suicide vs ToDep", "Suicide vs ToAS","Depression vs ToDep","Depression vs ToAS"],)
@@ -247,3 +248,66 @@ expander.write("asdda")
 
 #students = {}
 
+st.header("Scater plot")
+
+fig = px.scatter(
+    x=df4["Depression score"],
+    y=df4["Acculturative Stress"],
+    color=df4["Gender"],
+    symbol=df4["Suicidal Ideation"]
+)
+fig.update_layout(
+    xaxis_title="Depresion",
+    yaxis_title="Stress",
+)
+
+col1, col2 = st.columns(2)
+with col1:
+    Grad = st.checkbox("Graduated Student", value=True)
+with col2:
+    Academic = st.checkbox("Active Students ", value=True)
+
+if Grad and Academic:
+    df4 = df4
+elif Grad:
+    df4 = df4.query("Academic == 'Grad'")
+elif Academic:
+    df4 = df4.query("Academic == 'Under'")
+else:
+    df4 = pd.DataFrame(columns=df4.columns)
+
+st.write(fig)
+
+
+
+def create_subplots():
+    df_M = pd.read_csv("D:\Bachelors\Semester2\VDSS\project_folder\VDSS_Visualisierungsprojekt\clean_data\malaysia_clean_mental_health.csv")
+    df4 = pd.read_csv("D:\Bachelors\Semester2\VDSS\project_folder\VDSS_Visualisierungsprojekt\clean_data\japan_student_mental_health.csv")
+    df4 = df4.query("Academic == 'Under'")
+    st.header("Comparison between two Universities with similar GDP and Happiness score")
+    range_of_age = st.slider('Select the age', min_value=17, max_value=29, value=(17, 29))
+    filtered_df1 = df_M[(df_M['Age'] >= range_of_age[0]) & (df_M['Age'] <= range_of_age[1])]
+    filtered_df2 = df4[(df4['Age'] >= range_of_age[0]) & (df4['Age'] <= range_of_age[1])]
+
+    def create_bar_chart(df, x, y, color, title, y_axis_title):
+        chart = alt.Chart(df).mark_bar().encode(
+            x=x,
+            y=alt.Y(y, axis=alt.Axis(title=y_axis_title)),
+            color=color
+        ).properties(
+            width=250, height=250,
+            title=title
+        )
+        return chart
+
+    bar_chart1 = create_bar_chart(filtered_df1, "Depression", "count(Depression)", alt.Color("Gender", scale=alt.Scale(domain=['Male', 'Female'], range=['#8ec7df', '#ff505a'])),"Japan University", "Count of Depression")
+    bar_chart2 = create_bar_chart(filtered_df2, "Depression", "count(Depression)", alt.Color("Gender", scale=alt.Scale(domain=['Male', 'Female'], range=['#8ec7df', '#ff505a'])),"Malaysia University", "Count of Depression")
+
+    combined_chart = alt.hconcat(bar_chart1, bar_chart2)
+    st.altair_chart(combined_chart, use_container_width=True)
+
+    expander = st.expander("See Conclusions")
+    expander.write("bbbb")
+
+# Call the function to create subplots
+create_subplots()

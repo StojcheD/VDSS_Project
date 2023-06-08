@@ -1,4 +1,4 @@
-inter_dom,Region,Gender,Academic,Age,Suicide,Dep,DepType,ToDep,DepSev,ToAS
+inter_dom,Region,Gender,Academic,Age,Suicidal Ideation,Depression,DepType,Depression score,DepSev,Acculturative Stress
 Inter,SEA,Male,Grad,24,No,No,No,0,Min,91
 Inter,SEA,Male,Grad,28,No,No,No,2,Min,39
 Inter,SEA,Male,Grad,25,No,No,No,2,Min,51
