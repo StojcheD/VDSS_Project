@@ -14,14 +14,14 @@ import altair as alt
 
 ##############################################################################
 path = os.getcwd()
-df_japan_uni = pd.read_csv(path + "\clean_data\japan_student_mental_health.csv")
-df_global_mental_health = pd.read_csv(path + "\clean_data\cleaned_data_global_mental_health.csv")
-df_malaysia_uni = pd.read_csv(path + "\clean_data\malaysia_clean_mental_health.csv")
+df_japan_uni = pd.read_csv(path + "\..\\clean_data\japan_student_mental_health.csv")
+df_global_mental_health = pd.read_csv(path + "\..\\clean_data\cleaned_data_global_mental_health.csv")
+df_malaysia_uni = pd.read_csv(path + "\..\\clean_data\malaysia_clean_mental_health.csv")
 
 
 def get_data():
     with open(
-            path + "\clean_data\countries.geojson") as response:
+            path + "\..\\clean_data\countries.geojson") as response:
         geo = json.load(response)
 
     return geo ##, Countries, happines_data
@@ -41,7 +41,7 @@ def generate_happiness_map():
 
     selectedYear = st.selectbox('Select the year for Happiness data', years)
     st.write("The data is from the year:", selectedYear)
-    happines_data[selectedYear] = pd.read_csv(path + f"\clean_data\{selectedYear}.csv")
+    happines_data[selectedYear] = pd.read_csv(path + f"\..\\clean_data\{selectedYear}.csv")
 
     countries = happines_data[selectedYear]["Country"].unique()
     df = happines_data[selectedYear]
@@ -140,7 +140,7 @@ def generate_treemap():
     data = {}
 
     selectedYear = st.select_slider("Choose a Year", options=years)
-    data[selectedYear] = pd.read_csv(path + f"/clean_data/{selectedYear}.csv")
+    data[selectedYear] = pd.read_csv(path + f"\..\/clean_data/{selectedYear}.csv")
     df = data[selectedYear]
     st.write("The data is from the year:", selectedYear)
 
@@ -206,7 +206,7 @@ def plot_correlation_heatmap():
     st.header('Correlation between different Human Development Indices')
     st.write("Education and country wealth are corelated however not with the understanding of mental health.")
 
-    df1 = pd.read_csv(path + '\clean_data\cleaned_data_global_mental_health.csv', usecols=[2, 3, 7, 8])
+    df1 = pd.read_csv(path + '\..\\clean_data\cleaned_data_global_mental_health.csv', usecols=[2, 3, 7, 8])
     df1.drop(df1[df1['Education'] == '99'].index, inplace=True)
     df1.drop(df1[df1['Self_experience'] == ' '].index, inplace=True)
     mapping_dict = {'Elementary or less': 0, 'Secondary': 1, 'Tertiary': 2, 'High income': 3, 'Upper-middle income': 2,
@@ -351,7 +351,7 @@ def plot_stacked_barplots(df_malaysia_uni):
 
 def visualize_mental_health_data():
     st.header('Understanding Mental Health in a University in Tokyo')
-    df_japan_uni = pd.read_csv(path + '/clean_data/japan_student_mental_health.csv')
+    df_japan_uni = pd.read_csv(path + '\..\/clean_data/japan_student_mental_health.csv')
     df_japan_uni = df_japan_uni.query("Academic == 'Under'")
 
     # assuming 'age' is ranging from 15 to 100
@@ -404,7 +404,7 @@ def visualize_mental_health_data():
 
 
 def compare_universities():
-    df_japan_uni = pd.read_csv(path + '/clean_data/japan_student_mental_health.csv')
+    df_japan_uni = pd.read_csv(path + '\..\/clean_data/japan_student_mental_health.csv')
     df_japan_uni = df_japan_uni.query("Academic == 'Under'")
 
     st.header("Comparison between two Universities with similar GDP and Happiness score")
