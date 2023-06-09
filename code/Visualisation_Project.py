@@ -107,13 +107,12 @@ def generate_happiness_map():
         fill_color="YlGn",
         legend_name="Income Status"
     )
-
-    choropleth.add_to(map)
-
     choropleth.geojson.add_child(
         folium.features.GeoJsonTooltip(tooltips, labels=False)
     )
+
     choropleth.geojson.add_to(map)
+    folium.LayerControl().add_to(map)
 
     st_map = st_folium(map, width=700, height=450)
 
@@ -433,7 +432,6 @@ def compare_universities():
     expander = st.expander("See Conclusions")
     expander.write("bbbb")
 
-##############################################################################
 def main():
     geo = get_data()
 
