@@ -9,19 +9,12 @@ import seaborn as sns
 import os
 from matplotlib_venn import venn3
 import numpy as np
+import altair as alt
+
+
+##############################################################################
 
 path = os.getcwd()
-
-APP_TITLE = 'The Name OF THe PRoject'
-APP_SUB_TITLE = 'Source: asdfg'
-st.set_page_config(APP_TITLE)
-st.title(APP_TITLE)
-
-years = ["2015", "2016","2017","2018","2019","2020","2021"]
-happines_data = {}
-st.header('Happy people around the world')
-st.write('Higher incomes lead to more happy faces. The countries with a higher economic score are more happy than the countries with low scores.'
-         ' The freedom of choice and social support has a mixed effect on the happiness index depending on the country. The map shows the countries happiness score with economic, social support and freedom to make life choices score alongside the income for 7 years.')
 
 
 def get_data():
@@ -46,6 +39,35 @@ def get_data():
 
 
 geo = get_data()
+
+
+df4 = pd.read_csv(path + "\clean_data\japan_student_mental_health.csv")
+df5 = pd.read_csv(path + "\clean_data\cleaned_data_global_mental_health.csv")
+df6 = pd.read_csv(path + "\clean_data\malaysia_clean_mental_health.csv")
+
+
+##############################################################################
+
+APP_TITLE = 'The Name OF THe PRoject'
+
+
+APP_SUB_TITLE = 'Source: asdfg'
+st.set_page_config(APP_TITLE)
+st.title(APP_TITLE)
+
+
+##############################################################################
+
+
+# world map
+
+
+years = ["2015", "2016","2017","2018","2019","2020","2021"]
+happines_data = {}
+st.header('Happy people around the world')
+st.write('Higher incomes lead to more happy faces. The countries with a higher economic score are more happy than the countries with low scores.'
+         ' The freedom of choice and social support has a mixed effect on the happiness index depending on the country. The map shows the countries happiness score with economic, social support and freedom to make life choices score alongside the income for 7 years.')
+
 
 labels = ["Country"]
 tooltips = ["ADMIN"]
@@ -106,11 +128,6 @@ if Freedom:
             feature["properties"]["Freedom"] = "No Data"
 
 
-##############################################################################
-
-
-# first graph
-
 map = folium.Map(zoom_start=4, scrollWheelZoom=False, tiles='CartoDB positron')
 
 choropleth = folium.Choropleth(
@@ -154,7 +171,7 @@ expander.write("The top five positions in the happiness score are taken up by th
 ##############################################################################
 
 
-# second graph
+# Treemap
 
 st.header('Treemap')
 st.subheader('description about the graph')
@@ -182,7 +199,7 @@ expander.write("something")
 ##############################################################################
 
 
-# 3rd graph
+# Correlation graph
 
 st.header('Correlation between different Human Development Indices')
 st.write("Higher education leads to higher country wealth, however, interestingly, higher education doesn't provides understanding of mental health importance, on the contrary has a negative effect. Also, higher education leads to lower mental health self-experiences.")
@@ -207,7 +224,7 @@ expander.write("The mental health importance is correlated with people's self-ex
 ##############################################################################
 
 
-# graph4
+# Boxplot
 
 st.header('Box plot')
 
@@ -234,19 +251,19 @@ elif International:
 else:
     df4 = pd.DataFrame(columns = df4.columns)  # Create an empty DataFrame with the same columns as df4
 
-fig1 = px.box(df4, x="Suicide", y="ToDep", color="Gender",points="all")
+fig1 = px.box(df4, x="Suicidal Ideation", y="Depression score", color="Gender",points="all")
 fig1.update_traces(quartilemethod="exclusive")
 
-fig2 = px.box(df4, x="Suicide", y="ToAS", color="Gender",points="all")
+fig2 = px.box(df4, x="Suicidal Ideation", y="Acculturative Stress", color="Gender",points="all")
 fig2.update_traces(quartilemethod="exclusive")
 
-fig3 = px.box(df4, x="Dep", y="ToDep", color="Gender",points="all")
+fig3 = px.box(df4, x="Depression", y="Depression score", color="Gender",points="all")
 fig3.update_traces(quartilemethod="exclusive")
 
-fig4 = px.box(df4, x="Dep", y="ToAS", color="Gender",points="all")
+fig4 = px.box(df4, x="Depression", y="Acculturative Stress", color="Gender",points="all")
 fig4.update_traces(quartilemethod="exclusive")
 
-tab1, tab2, tab3, tab4 = st.tabs(["Suicide vs ToDep", "Suicide vs ToAS","Depression vs ToDep","Depression vs ToAS"],)
+tab1, tab2, tab3, tab4 = st.tabs(["Suicidal Ideation vs Depression score", "Suicidal Ideation vs Acculturative Stress","Depression vs Depression score","Depression vs Acculturative Stress"],)
 with tab1:
     st.write(fig1)
 with tab2:
@@ -261,12 +278,6 @@ expander.write("asdda")
 
 #students = {}
 
-##############################################################################
-
-
-df1 = pd.read_csv(path + "\clean_data\cleaned_data_global_mental_health.csv")
-df2 = pd.read_csv(path + "\clean_data\malaysia_clean_mental_health.csv")
-
 
 ##############################################################################
 
@@ -275,15 +286,15 @@ df2 = pd.read_csv(path + "\clean_data\malaysia_clean_mental_health.csv")
 
 st.title("Importance Table")
 st.write("The table below shows the percentage of importance values:")
-importance_counts = df1["Importance"].value_counts(normalize=True) * 100
-regions = sorted(df1["Region"].unique())
+importance_counts = df5["Importance"].value_counts(normalize=True) * 100
+regions = sorted(df5["Region"].unique())
 importance_table = pd.DataFrame({"Region": regions})
 columns = ["Region", "More important", "As important", "Less important"]
 for column in columns[1:]:
     importance_table[column] = 0
 
 for region in regions:
-    region_df = df1[df1["Region"] == region]
+    region_df = df5[df5["Region"] == region]
     region_counts = region_df["Importance"].value_counts(normalize=True) * 100
     for index, count in region_counts.items():
         importance_table.loc[importance_table["Region"] == region, index] = count
@@ -305,8 +316,8 @@ st.table(importance_table)
 
 st.title("Bar Plots")
 st.write("The bar plots below show the count of 'Yes' and 'No' in Self Experience by Country Wealth:")
-yes_df = df1[df1["Self_experience"] == "Yes"]
-no_df = df1[df1["Self_experience"] == "No"]
+yes_df = df5[df5["Self_experience"] == "Yes"]
+no_df = df5[df5["Self_experience"] == "No"]
 yes_wealth_counts = yes_df["Country_wealth"].value_counts()
 no_wealth_counts = no_df["Country_wealth"].value_counts()
 yes_wealth_counts = yes_wealth_counts.rename({
@@ -327,19 +338,19 @@ bar_colors = {
     "Low": "darkred",
     "Low-middle": "indianred"
 }
-plt.figure(figsize=(13, 4))
-plt.subplot(1, 2, 1)
-plt.bar(yes_wealth_counts.index, yes_wealth_counts.values, color=[bar_colors.get(x, 'gray') for x in yes_wealth_counts.index])
-plt.xlabel("Country Wealth")
-plt.ylabel("Count")
-plt.title("Count of 'Yes' in Self Experience by Country Wealth")
-plt.subplot(1, 2, 2)
-plt.bar(no_wealth_counts.index, no_wealth_counts.values, color=[bar_colors.get(x, 'gray') for x in no_wealth_counts.index])
-plt.xlabel("Country Wealth")
-plt.ylabel("Count")
-plt.title("Count of 'No' in Self Experience by Country Wealth")
+fig, axs = plt.subplots(1, 2, figsize=(13, 4))
+axs[0].bar(yes_wealth_counts.index, yes_wealth_counts.values, color=[bar_colors.get(x, 'gray') for x in yes_wealth_counts.index])
+axs[0].set_xlabel("Country Wealth")
+axs[0].set_ylabel("Count")
+axs[0].set_title("Count of 'Yes' in Self Experience by Country Wealth")
+axs[1].bar(no_wealth_counts.index, no_wealth_counts.values, color=[bar_colors.get(x, 'gray') for x in no_wealth_counts.index])
+axs[1].set_xlabel("Country Wealth")
+axs[1].set_ylabel("Count")
+axs[1].set_title("Count of 'No' in Self Experience by Country Wealth")
 plt.tight_layout()
-st.pyplot()
+
+# Pass the figure object 'fig' to st.pyplot()
+st.pyplot(fig)
 
 
 ##############################################################################
@@ -349,11 +360,11 @@ st.pyplot()
 
 st.title("Venn Diagram")
 st.write("The Venn diagram below shows the overlap of mental illnesses in Malaysia:")
-count = df2["Depression"].value_counts()["Yes"]
-depression_yes = set(df2[df2["Depression"] == "Yes"].index)
-anxiety_yes = set(df2[df2["Anxiety"] == "Yes"].index)
-panic_attacks_yes = set(df2[df2["Panic_attacks"] == "Yes"].index)
-no_df = df2[(df2["Depression"] == "No") & (df2["Anxiety"] == "No") & (df2["Panic_attacks"] == "No")]
+count = df6["Depression"].value_counts()["Yes"]
+depression_yes = set(df6[df6["Depression"] == "Yes"].index)
+anxiety_yes = set(df6[df6["Anxiety"] == "Yes"].index)
+panic_attacks_yes = set(df6[df6["Panic_attacks"] == "Yes"].index)
+no_df = df6[(df6["Depression"] == "No") & (df6["Anxiety"] == "No") & (df6["Panic_attacks"] == "No")]
 no_count = len(no_df)
 venn_labels = {
     "100": len(depression_yes - anxiety_yes - panic_attacks_yes),
@@ -364,29 +375,31 @@ venn_labels = {
     "011": len(anxiety_yes & panic_attacks_yes - depression_yes),
     "111": len(depression_yes & anxiety_yes & panic_attacks_yes),
 }
-plt.figure(figsize=(8, 8))
+fig, ax = plt.subplots(figsize=(8, 8))
 venn = venn3(subsets=venn_labels, set_labels=("Depression", "Anxiety", "Panic Attacks"))
 for circle in venn.patches:
     circle.set_edgecolor('black')
     circle.set_linewidth(1.5)
-plt.text(0.45 , -0.5, f"No Mental Illness:\n{no_count}", horizontalalignment='left',
+plt.text(0.45, -0.5, f"No Mental Illness:\n{no_count}", horizontalalignment='left',
          verticalalignment='bottom', fontsize=12)
 plt.title("Venn Diagram of Mental Illnesses")
-plt.show()
-st.pyplot()
+
+# Pass the figure object 'fig' to st.pyplot()
+st.pyplot(fig)
 
 
 ##############################################################################
 
+# Stacked Barplots
 
 # Define the data and calculations (replace with your own data)
-majors = df2["Major"].unique()
+majors = df6["Major"].unique()
 mental_illnesses = ["Depression", "Anxiety", "Panic_attacks"]
 illness_counts_all = []
 illness_counts_with_illness = []
 
 for major in majors:
-    major_df = df2[df2["Major"] == major]
+    major_df = df6[df6["Major"] == major]
     illness_count_all = []
     illness_count_with_illness = []
     for illness in mental_illnesses:
@@ -456,4 +469,36 @@ with st.container():
 
     st.pyplot(fig_with_illness)
 
+##############################################################################
 
+
+# Barchart
+
+
+df4 = df4.query("Academic == 'Under'")
+st.header("Comparison between two Universities with similar GDP and Happiness score")
+range_of_age = st.slider('Select the age', min_value=17, max_value=29, value=(17, 29))
+filtered_df1 = df6[(df6['Age'] >= range_of_age[0]) & (df6['Age'] <= range_of_age[1])]
+filtered_df2 = df4[(df4['Age'] >= range_of_age[0]) & (df4['Age'] <= range_of_age[1])]
+
+def create_bar_chart(df, x, y, color, title, y_axis_title):
+    chart = alt.Chart(df).mark_bar().encode(
+        x=x,
+        y=alt.Y(y, axis=alt.Axis(title=y_axis_title)),
+        color=color
+    ).properties(
+        width=250, height=250,
+        title=title
+    )
+    return chart
+
+bar_chart1 = create_bar_chart(filtered_df1, "Depression", "count(Depression)", alt.Color("Gender", scale=alt.Scale(domain=['Male', 'Female'], range=['#8ec7df', '#ff505a'])),"Japan University", "Count of Depression")
+bar_chart2 = create_bar_chart(filtered_df2, "Depression", "count(Depression)", alt.Color("Gender", scale=alt.Scale(domain=['Male', 'Female'], range=['#8ec7df', '#ff505a'])),"Malaysia University", "Count of Depression")
+
+combined_chart = alt.hconcat(bar_chart1, bar_chart2)
+st.altair_chart(combined_chart, use_container_width=True)
+
+expander = st.expander("See Conclusions")
+expander.write("bbbb")
+
+##############################################################################
