@@ -12,7 +12,7 @@ import numpy as np
 import altair as alt
 
 
-##############################################################################
+
 path = os.getcwd()
 df_japan_uni = pd.read_csv(path + "\clean_data\japan_student_mental_health.csv")
 df_global_mental_health = pd.read_csv(path + "\clean_data\cleaned_data_global_mental_health.csv")
@@ -105,7 +105,7 @@ def generate_happiness_map():
         fill_opacity=0.5,
         highlight=True,
         fill_color="YlGn",
-        legend_name="Income Status"
+        legend_name="Hapiness Score"
     )
 
     choropleth.add_to(map)
@@ -139,8 +139,7 @@ def generate_treemap():
 
     years = [2015, 2016, 2017, 2018, 2019, 2020, 2021]
     data = {}
-
-    selectedYear = st.select_slider("Choose a Year", options=years)
+    selectedYear = st.selectbox('Select the year for the data', years)
     data[selectedYear] = pd.read_csv(path + f"/clean_data/{selectedYear}.csv")
     df = data[selectedYear]
     st.write("The data is from the year:", selectedYear)
@@ -150,11 +149,7 @@ def generate_treemap():
                      color_continuous_scale='RdBu', branchvalues='total')
     fig.update_layout(margin=dict(t=5, l=2.5, r=2.5, b=2.5))
 
-    tab1, tab2 = st.tabs(["Streamlit theme (default)", "Plotly native theme"])
-    with tab1:
-        st.plotly_chart(fig, theme="streamlit", use_container_width=True)
-    with tab2:
-        st.plotly_chart(fig, theme=None, use_container_width=True)
+    st.plotly_chart(fig, theme=None, use_container_width=True)
 
     st.caption('Source of the graph')
 
