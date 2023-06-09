@@ -24,7 +24,7 @@ def get_data():
             path + "\clean_data\countries.geojson") as response:
         geo = json.load(response)
 
-    return geo ##, Countries, happines_data
+    return geo
 
 
 geo = get_data()
@@ -93,7 +93,7 @@ def generate_happiness_map():
             else:
                 feature["properties"]["Freedom"] = "No Data"
 
-    map = folium.Map(zoom_start=4, scrollWheelZoom=False, tiles='CartoDB positron')
+    map = folium.Map(location=[45, 0], zoom_start=1.3, scrollWheelZoom=False, tiles='CartoDB positron')
 
     choropleth = folium.Choropleth(
         name="Income Status Map",
@@ -261,7 +261,6 @@ def plot_venn_diagram(df_malaysia_uni):
 
     plt.title("Venn Diagram of Mental Illnesses")
 
-    # Pass the figure object 'fig' to st.pyplot()
     st.pyplot(fig)
 
     expander = st.expander("See Conclusions")
@@ -350,7 +349,6 @@ def visualize_mental_health_data():
     df_japan_uni = pd.read_csv(path + '/clean_data/japan_student_mental_health.csv')
     df_japan_uni = df_japan_uni.query("Academic == 'Under'")
 
-    # assuming 'age' is ranging from 15 to 100
     age_range = st.slider('Select age range', min_value=17, max_value=31, value=(17, 31))
 
     # filter dataframe by selected age range
@@ -428,7 +426,6 @@ def compare_universities():
     expander = st.expander("See Conclusions")
     expander.write("bbbb")
 
-##############################################################################
 def main():
     geo = get_data()
 
@@ -437,7 +434,6 @@ def main():
     st.set_page_config(APP_TITLE)
     st.title(APP_TITLE)
 
-    # Call the generate_happiness_map() function
     generate_happiness_map()
     generate_treemap()
     create_importance_table(df_global_mental_health)
