@@ -458,7 +458,7 @@ def main():
     geo = get_data()
 
 
-    APP_TITLE = 'The Name OF THe PRoject'
+    APP_TITLE = 'The name of the project'
     st.set_page_config(APP_TITLE)
     st.title(APP_TITLE)
 
