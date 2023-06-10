@@ -13,6 +13,9 @@ import altair as alt
 
 
 ##############################################################################
+
+# Import the data
+
 path = os.getcwd()
 df_japan_uni = pd.read_csv(path + "\..\\clean_data\japan_student_mental_health.csv")
 df_global_mental_health = pd.read_csv(path + "\..\\clean_data\cleaned_data_global_mental_health.csv")
@@ -29,6 +32,9 @@ def get_data():
 
 geo = get_data()
 
+
+# function to create a world map with happiness data
+# can be changed to see diffrent years, social score, economy score, etc.
 
 def generate_happiness_map():
     years = ["2015", "2016","2017","2018","2019","2020","2021"]
@@ -131,6 +137,8 @@ def generate_happiness_map():
                    " This is most probably due to the unequal distribution of wealth. Afghanistan, due to prolonged wars, remained in the lowest ranks in the happiness index.")
 
 
+# function to create a treemap
+
 def generate_treemap():
     st.header('Happiness and Life Expectancy around the world')
     st.write('The happiness score and the life expectancy is corelated for most countries.')
@@ -139,6 +147,7 @@ def generate_treemap():
     years = [2015, 2016, 2017, 2018, 2019, 2020, 2021]
     data = {}
 
+    # create a slider to select the year that will be shown
     selectedYear = st.select_slider("Choose a Year", options=years)
     data[selectedYear] = pd.read_csv(path + f"\..\/clean_data/{selectedYear}.csv")
     df = data[selectedYear]
@@ -167,6 +176,7 @@ def generate_treemap():
                    "  shows a negative trend in life expectancy from 2016 to 2021.  However, Latin America countries shows a positive trend in life expectancy from 2016 to 2021.")
 
 
+# function to create a table about the importance of menatl health in the world
 
 def create_importance_table(df):
     st.title("Importance Table")
@@ -201,6 +211,7 @@ def create_importance_table(df):
                    " thus making it two regions with people considering mental health as either more important or as important. ")
 
 
+# function for the heatmap 
 
 def plot_correlation_heatmap():
     st.header('Correlation between different Human Development Indices')
@@ -230,6 +241,8 @@ def plot_correlation_heatmap():
                    "While country wealth and education are both correlated among themselves.")
 
 
+# function for a vann-diagramm to show how many have which mental illness 
+# in the malaysia dataset
 
 def plot_venn_diagram(df_malaysia_uni):
     st.title("Venn Diagram")
@@ -243,6 +256,8 @@ def plot_venn_diagram(df_malaysia_uni):
                 df_malaysia_uni["Panic_attacks"] == "No")]
     no_count = len(no_df)
 
+    # create the diffrent parts of the diagramm and fills it with the
+    # respective number from the dataset
     venn_labels = {
         "100": len(depression_yes - anxiety_yes - panic_attacks_yes),
         "010": len(anxiety_yes - depression_yes - panic_attacks_yes),
@@ -265,13 +280,14 @@ def plot_venn_diagram(df_malaysia_uni):
 
     plt.title("Venn Diagram of Mental Illnesses")
 
-    # Pass the figure object 'fig' to st.pyplot()
     st.pyplot(fig)
 
     expander = st.expander("See Conclusions")
     expander.write("assdaaasdsdaa")
 
 
+# function to create two stacked barplots, one with all majors and one without
+# those who have no menatl illnesses, from the malaysian dataset
 
 def plot_stacked_barplots(df_malaysia_uni):
     majors = df_malaysia_uni["Major"].unique()
@@ -307,6 +323,7 @@ def plot_stacked_barplots(df_malaysia_uni):
 
     st.write("Discribtion")
 
+    # creating the one with all majors
     fig_all = plt.figure(figsize=(10, 6))
     bars_all = []
     bottom_all = np.zeros(len(majors_all))
@@ -322,6 +339,7 @@ def plot_stacked_barplots(df_malaysia_uni):
     plt.legend(bars_all, mental_illnesses)
     plt.tight_layout()
 
+    # creating the one only with those majors with menatl illnesses
     fig_with_illness = plt.figure(figsize=(10, 6))
     bars_with_illness = []
     bottom_with_illness = np.zeros(len(majors_with_illness))
@@ -354,7 +372,7 @@ def visualize_mental_health_data():
     df_japan_uni = pd.read_csv(path + '\..\/clean_data/japan_student_mental_health.csv')
     df_japan_uni = df_japan_uni.query("Academic == 'Under'")
 
-    # assuming 'age' is ranging from 15 to 100
+    # create a slider to select the range of the shown age
     age_range = st.slider('Select age range', min_value=17, max_value=31, value=(17, 31))
 
     # filter dataframe by selected age range
@@ -375,6 +393,7 @@ def visualize_mental_health_data():
     else:
         df_japan_uni = pd.DataFrame(columns=df_japan_uni.columns)
 
+    # create the diffrent figures to later show in diffrent tabs
     fig1 = px.box(df_japan_uni, x="Suicidal Ideation", y="Depression score", color="Gender")
     fig1.update_traces(quartilemethod="exclusive")
 
@@ -387,6 +406,7 @@ def visualize_mental_health_data():
     fig4 = px.box(df_japan_uni, x="Depression", y="Acculturative Stress", color="Gender")
     fig4.update_traces(quartilemethod="exclusive")
 
+    # create the diffrent tabs
     tab1, tab2, tab3, tab4 = st.tabs(["Suicide vs ToDep", "Suicide vs ToAS", "Depression vs ToDep", "Depression vs ToAS"],)
     with tab1:
         st.write(fig1)
@@ -401,7 +421,7 @@ def visualize_mental_health_data():
     expander.write("asdda")
 
 
-
+# create a barplot to compare the japanese data to the malaysian dataset
 
 def compare_universities():
     df_japan_uni = pd.read_csv(path + '\..\/clean_data/japan_student_mental_health.csv')
@@ -432,6 +452,8 @@ def compare_universities():
     expander = st.expander("See Conclusions")
     expander.write("bbbb")
 
+
+# main function to put all graphs together and name the project
 def main():
     geo = get_data()
 
@@ -440,7 +462,6 @@ def main():
     st.set_page_config(APP_TITLE)
     st.title(APP_TITLE)
 
-    # Call the generate_happiness_map() function
     generate_happiness_map()
     generate_treemap()
     create_importance_table(df_global_mental_health)
