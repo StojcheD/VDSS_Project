@@ -44,7 +44,7 @@ def main():
     st.pyplot(get_stacked_barplot_by_major_all(df2))
 
     st.title("Stacked barplot 2")
-    st.write("Wich major has what illness without those that have none.")
+    st.write("Wich major has what illness, without those, that have none.")
     st.pyplot(get_stacked_barplot_by_major_with(df2))
 
 
