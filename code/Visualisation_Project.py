@@ -99,7 +99,7 @@ def generate_happiness_map():
             else:
                 feature["properties"]["Freedom"] = "No Data"
 
-    map = folium.Map(zoom_start=4, scrollWheelZoom=False, tiles='CartoDB positron')
+    map = folium.Map(location=[45, 0], zoom_start=1.3, scrollWheelZoom=False, tiles='CartoDB positron')
 
     choropleth = folium.Choropleth(
         name="Income Status Map",
@@ -111,14 +111,15 @@ def generate_happiness_map():
         fill_opacity=0.5,
         highlight=True,
         fill_color="YlGn",
-        legend_name="Income Status"
+        legend_name="Hapiness Score"
     )
+    choropleth.add_to(map)
+
     choropleth.geojson.add_child(
         folium.features.GeoJsonTooltip(tooltips, labels=False)
     )
 
     choropleth.geojson.add_to(map)
-    folium.LayerControl().add_to(map)
 
     st_map = st_folium(map, width=700, height=450)
 
@@ -158,11 +159,7 @@ def generate_treemap():
                      color_continuous_scale='RdBu', branchvalues='total')
     fig.update_layout(margin=dict(t=5, l=2.5, r=2.5, b=2.5))
 
-    tab1, tab2 = st.tabs(["Streamlit theme (default)", "Plotly native theme"])
-    with tab1:
-        st.plotly_chart(fig, theme="streamlit", use_container_width=True)
-    with tab2:
-        st.plotly_chart(fig, theme=None, use_container_width=True)
+    st.plotly_chart(fig, theme=None, use_container_width=True)
 
     st.caption('Source of the graph')
 
@@ -458,10 +455,20 @@ def main():
     geo = get_data()
 
 
-    APP_TITLE = 'The name of the project'
-    st.set_page_config(APP_TITLE)
-    st.title(APP_TITLE)
-
+    APP_TITLE = 'Thoughts around the world'
+    #st.set_page_config(APP_TITLE)
+    st.set_page_config(
+        page_title="Visualisation Project",
+        page_icon=":bar_chart:",
+        layout="centered",
+        initial_sidebar_state="expanded",
+        menu_items={
+            'About': "# This is a header. This is an *extremely* cool app!"
+        }
+    )
+    st.markdown('<h1 style="color: black;">Thoughts around the world</h1>', unsafe_allow_html=True)
+    #st.title(APP_TITLE)
+    st.subheader("a visual exploration of global mental health")
     generate_happiness_map()
     generate_treemap()
     create_importance_table(df_global_mental_health)

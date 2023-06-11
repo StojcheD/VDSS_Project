@@ -10,6 +10,7 @@ import os
 from matplotlib_venn import venn3
 import numpy as np
 import altair as alt
+from streamlit_extras.colored_header import colored_header
 
 
 
@@ -33,7 +34,7 @@ geo = get_data()
 def generate_happiness_map():
     years = ["2015", "2016","2017","2018","2019","2020","2021"]
     happines_data = {}
-    st.header('Happy people around the world')
+    st.header('Happiness around the world')
     st.write('Higher incomes lead to more happy faces.')
 
     labels = ["Country"]
@@ -345,7 +346,7 @@ def plot_stacked_barplots(df_malaysia_uni):
 
 
 def visualize_mental_health_data():
-    st.header('Understanding Mental Health in a University in Tokyo')
+    st.header('Relationship between mental illnesses as reported by students Tokio Uni mental illness insights')
     df_japan_uni = pd.read_csv(path + '/clean_data/japan_student_mental_health.csv')
     df_japan_uni = df_japan_uni.query("Academic == 'Under'")
 
@@ -430,10 +431,20 @@ def main():
     geo = get_data()
 
 
-    APP_TITLE = 'The Name OF THe PRoject'
-    st.set_page_config(APP_TITLE)
-    st.title(APP_TITLE)
-
+    APP_TITLE = 'Thoughts around the world'
+    #st.set_page_config(APP_TITLE)
+    st.set_page_config(
+        page_title="Visualisation Project",
+        page_icon=":bar_chart:",
+        layout="centered",
+        initial_sidebar_state="expanded",
+        menu_items={
+            'About': "# This is a header. This is an *extremely* cool app!"
+        }
+    )
+    st.markdown('<h1 style="color: black;">Thoughts around the world</h1>', unsafe_allow_html=True)
+    #st.title(APP_TITLE)
+    st.subheader("a visual exploration of global mental health")
     generate_happiness_map()
     generate_treemap()
     create_importance_table(df_global_mental_health)
