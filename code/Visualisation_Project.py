@@ -17,7 +17,7 @@ import altair as alt
 # Import the data
 
 path = os.getcwd()
-df_japan_uni = pd.read_csv(path + "\..\\clean_data\japan_clean_mental_health.csv")
+df_japan_uni = pd.read_csv(path + "\..\\clean_data\japan_student_mental_health.csv")
 df_global_mental_health = pd.read_csv(path + "\..\\clean_data\cleaned_data_global_mental_health.csv")
 df_malaysia_uni = pd.read_csv(path + "\..\\clean_data\malaysia_clean_mental_health.csv")
 
@@ -381,7 +381,7 @@ def visualize_mental_health_data():
              "demographic. The series of box plots offer a detailed comparison of depression scores and acculturative stress levels"
              "against the presence of suicidal ideation and depression, segregated by gender.")
 
-    df_japan_uni = pd.read_csv(path + '\..\/clean_data/japan_clean_mental_health.csv')
+    df_japan_uni = pd.read_csv(path + '\..\/clean_data/japan_student_mental_health.csv')
     df_japan_uni = df_japan_uni.query("Academic == 'Under'")
 
     # create a slider to select the range of the shown age
@@ -441,7 +441,7 @@ def visualize_mental_health_data():
 # create a barplot to compare the japanese data to the malaysian dataset
 
 def compare_universities():
-    df_japan_uni = pd.read_csv(path + '\..\/clean_data/japan_clean_mental_health.csv')
+    df_japan_uni = pd.read_csv(path + '\..\/clean_data/japan_student_mental_health.csv')
     df_japan_uni = df_japan_uni.query("Academic == 'Under'")
 
     st.header("Comparison between two Universities with similar GDP and Happiness score")
