@@ -15,7 +15,7 @@ from streamlit_extras.colored_header import colored_header
 
 
 path = os.getcwd()
-df_japan_uni = pd.read_csv(path + "\clean_data\japan_student_mental_health.csv")
+df_japan_uni = pd.read_csv(path + "\clean_data\japan_clean_mental_health.csv")
 df_global_mental_health = pd.read_csv(path + "\clean_data\cleaned_data_global_mental_health.csv")
 df_malaysia_uni = pd.read_csv(path + "\clean_data\malaysia_clean_mental_health.csv")
 
@@ -347,7 +347,7 @@ def plot_stacked_barplots(df_malaysia_uni):
 
 def visualize_mental_health_data():
     st.header('Relationship between mental illnesses as reported by students Tokio Uni mental illness insights')
-    df_japan_uni = pd.read_csv(path + '/clean_data/japan_student_mental_health.csv')
+    df_japan_uni = pd.read_csv(path + "\clean_data\japan_clean_mental_health.csv")
     df_japan_uni = df_japan_uni.query("Academic == 'Under'")
 
     age_range = st.slider('Select age range', min_value=17, max_value=31, value=(17, 31))
@@ -399,7 +399,8 @@ def visualize_mental_health_data():
 
 
 def compare_universities():
-    df_japan_uni = pd.read_csv(path + '/clean_data/japan_student_mental_health.csv')
+    #df_japan_uni = pd.read_csv(path + '/clean_data/japan_student_mental_health.csv')
+    df_japan_uni = pd.read_csv(path + "\clean_data\japan_clean_mental_health.csv")
     df_japan_uni = df_japan_uni.query("Academic == 'Under'")
 
     st.header("Comparison between two Universities with similar GDP and Happiness score")

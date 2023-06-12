@@ -17,7 +17,7 @@ import altair as alt
 # Import the data
 
 path = os.getcwd()
-df_japan_uni = pd.read_csv(path + "\..\\clean_data\japan_student_mental_health.csv")
+df_japan_uni = pd.read_csv(path + "\..\\clean_data\japan_clean_mental_health.csv")
 df_global_mental_health = pd.read_csv(path + "\..\\clean_data\cleaned_data_global_mental_health.csv")
 df_malaysia_uni = pd.read_csv(path + "\..\\clean_data\malaysia_clean_mental_health.csv")
 
@@ -281,7 +281,10 @@ def plot_venn_diagram(df_malaysia_uni):
     st.pyplot(fig)
 
     expander = st.expander("See Conclusions")
-    expander.write("assdaaasdsdaa")
+    expander.write("The Venn diagram sheds light on the status of depression, anxiety and panic attacks and how they are related. "
+                   "Depression is related to both anxiety and panic attacks while the relationship between anxiety and panic attacks is comparably not stronger. "
+                   "However, the combined relationship among all the three factors is a stronger. "
+                   "That means a good number of respondents had anxiety leading to depression and panic attack.")
 
 
 # function to create two stacked barplots, one with all majors and one without
@@ -362,7 +365,11 @@ def plot_stacked_barplots(df_malaysia_uni):
         st.pyplot(fig_with_illness)
 
     expander = st.expander("See Conclusions")
-    expander.write("ahhdha")
+    expander.write("The distribution shows the mental illness by major of the respondents of the survey.  "
+                   "Students with major in STEM courses have a higher rate of mental illness as compared to the other majors."
+                   " BIT, Engineering, and Computer science are the three leading majors with higher rate of mental illness."
+                   " It is common to have panic attacks as a student due to the exam pressure or stress however, "
+                   "the STEM students face depression and anxiety alongside panic attacks. ")
 
 
 
@@ -374,7 +381,7 @@ def visualize_mental_health_data():
              "demographic. The series of box plots offer a detailed comparison of depression scores and acculturative stress levels"
              "against the presence of suicidal ideation and depression, segregated by gender.")
 
-    df_japan_uni = pd.read_csv(path + '\..\/clean_data/japan_student_mental_health.csv')
+    df_japan_uni = pd.read_csv(path + '\..\/clean_data/japan_clean_mental_health.csv')
     df_japan_uni = df_japan_uni.query("Academic == 'Under'")
 
     # create a slider to select the range of the shown age
@@ -423,13 +430,18 @@ def visualize_mental_health_data():
         st.write(fig4)
 
     expander = st.expander("See Conclusions")
-    expander.write("asdda")
+    expander.write("The boxplot shows the suicide and depression against total depression score and total acculturative stress. "
+                   "For the complete age range i.e., from 17 to 31, in international students females have less suicidal thoughts even with a higher median score of depression as compare to male students,"
+                   " the same is true for domestic students as well.For suicide vs total acculturative stress, the median for the complete age range for male and females with no suicidal thoughts, the median lie very close to each other, however, the median for female students with suicidal thoughts is a bit high in acculturative stress."
+                   " However, for the domestic students the score is highly variable for both suicidal and no suicidal thoughts for both genders.For depression vs total acculturative stress (ToAS) international females students feel depressed with higher median for acculturative stress while for male students with a postive response to depression question, the median is a bit low."
+                   " However, the variability in both genders remain there. On the other hand students with no depression have a comparatively lower median of ToAS for both male and female students, only the female students data shows higher variability. "
+                   "The domestic students with positive response for depression shows highly variable response from male students while for the female students the variability is lower. However, for the negative responders the median for both male and female students are close to each other with little variation in the responders score.")
 
 
 # create a barplot to compare the japanese data to the malaysian dataset
 
 def compare_universities():
-    df_japan_uni = pd.read_csv(path + '\..\/clean_data/japan_student_mental_health.csv')
+    df_japan_uni = pd.read_csv(path + '\..\/clean_data/japan_clean_mental_health.csv')
     df_japan_uni = df_japan_uni.query("Academic == 'Under'")
 
     st.header("Comparison between two Universities with similar GDP and Happiness score")
@@ -459,7 +471,10 @@ def compare_universities():
     st.altair_chart(combined_chart, use_container_width=True)
 
     expander = st.expander("See Conclusions")
-    expander.write("bbbb")
+    expander.write("The bar plot shows the data from two countries with much the same happiness score and GDP. The students in the university in Japan shows the higher number of females with no depression and a significant number of male students as well."
+                   " However, for respondents with answer yes for the depression question. the number of female students remain high as well while the number of male students is very low. Same is the case for Malaysia except the respondents with answer yes,"
+                   " the number of male students is higher than the students in Japan.However for age range 17 to 22 the statistics follow the general trend however for the students age 22 to 29 (most probably post-graduate students)"
+                   " more females students responded yes to the question of depression, while the number of male students with a positive response to the same question grew in Malaysia, meaning more male students were having the signs of depression.  ")
 
 
 # main function to put all graphs together and name the project
