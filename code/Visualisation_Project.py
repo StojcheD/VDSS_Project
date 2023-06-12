@@ -39,8 +39,8 @@ geo = get_data()
 def generate_happiness_map():
     years = ["2015", "2016","2017","2018","2019","2020","2021"]
     happines_data = {}
-    st.header('Happy people around the world')
-    st.write('Higher incomes lead to more happy faces.')
+    st.header('Happiness around the world')
+    st.write('Inspecting happiness or well-being correlating with country wealth.')
 
     labels = ["Country"]
     tooltips = ["ADMIN"]
@@ -141,8 +141,9 @@ def generate_happiness_map():
 # function to create a treemap
 
 def generate_treemap():
-    st.header('Happiness and Life Expectancy around the world')
-    st.write('The happiness score and the life expectancy is corelated for most countries.')
+    st.header('Mental Health and Its Impact on Life Expectancy')
+    st.write('Investigating the potential correlation between mental health conditions and longevity across various global populations.')
+
 
 
     years = [2015, 2016, 2017, 2018, 2019, 2020, 2021]
@@ -176,8 +177,8 @@ def generate_treemap():
 # function to create a table about the importance of menatl health in the world
 
 def create_importance_table(df):
-    st.title("Importance Table")
-    st.write("The table below shows the percentage of importance values:")
+    st.title("Regional Analysis of Importance Ratings")
+    st.write("The following table provides a detailed percentage breakdown of 'importance' ratings across different regions. Each rating represents how respondents have ranked a particular factor in their region.")
     importance_counts = df["Importance"].value_counts(normalize=True) * 100
     regions = sorted(df["Region"].unique())
     importance_table = pd.DataFrame({"Region": regions})
@@ -211,8 +212,8 @@ def create_importance_table(df):
 # function for the heatmap 
 
 def plot_correlation_heatmap():
-    st.header('Correlation between different Human Development Indices')
-    st.write("Education and country wealth are corelated however not with the understanding of mental health.")
+    st.header("Exploring the Correlation Among Education, Income and Perception of Mental Health")
+    st.write("This heatmap depicts the correlation between various factors such as level of education, income category and self-experience of mental health.")
 
     df1 = pd.read_csv(path + '\..\\clean_data\cleaned_data_global_mental_health.csv', usecols=[2, 3, 7, 8])
     df1.drop(df1[df1['Education'] == '99'].index, inplace=True)
@@ -227,7 +228,7 @@ def plot_correlation_heatmap():
     sns.heatmap(df_corr, ax=ax, cmap="Blues", annot=True)
     st.write(fig)
 
-    st.caption('Source: aaaa')
+    st.caption('Source: https://wellcome.org/reports/wellcome-global-monitor-covid-19/2020')
 
     expander = st.expander("See Conclusions")
     expander.write("Higher education leads to higher country wealth, however, interestingly, higher education doesn't provide understanding of mental health importance. "
@@ -242,8 +243,8 @@ def plot_correlation_heatmap():
 # in the malaysia dataset
 
 def plot_venn_diagram(df_malaysia_uni):
-    st.title("Venn Diagram")
-    st.write("The Venn diagram below shows the overlap of mental illnesses in Malaysia:")
+    st.title("Intersection of Mental Health Conditions in Malaysia's University Students")
+    st.write("The Venn diagram provides a graphical representation of the overlap between depression, anxiety, and panic attacks among Malaysian university students. Each circle in the diagram represents one of the conditions. The areas where the circles intersect illustrate the students dealing with multiple conditions simultaneously.")
 
     count = df_malaysia_uni["Depression"].value_counts()["Yes"]
     depression_yes = set(df_malaysia_uni[df_malaysia_uni["Depression"] == "Yes"].index)
@@ -316,9 +317,11 @@ def plot_stacked_barplots(df_malaysia_uni):
     illness_counts_all = illness_counts_all[sorted_indices_all]
     illness_counts_with_illness = illness_counts_with_illness[sorted_indices_with_illness]
 
-    st.title("Distribution of Mental Illness by Major")
+    st.title("Prevalence of Mental Illnesses across Different University Majors")
 
-    st.write("Discribtion")
+    st.write("This section provides two stacked bar plots indicating the distribution of depression, anxiety, and panic attacks among students pursuing different majors."
+             "The first plot covers all majors, whereas the second focuses only on those majors where at least one instance of mental illness has been reported."
+             "This breakdown can offer insights into the relationship between study disciplines and mental health conditions.")
 
     # creating the one with all majors
     fig_all = plt.figure(figsize=(10, 6))
@@ -365,7 +368,12 @@ def plot_stacked_barplots(df_malaysia_uni):
 
 
 def visualize_mental_health_data():
-    st.header('Understanding Mental Health in a University in Tokyo')
+    st.header('Understanding Mental Health among University Students in Tokyo')
+    st.write("In this section, we are analyzing mental health data from a university in Tokyo, focusing on variables such as age,"
+             "student type (international or domestic), and gender. Users can manipulate the age range slider to narrow down the"
+             "demographic. The series of box plots offer a detailed comparison of depression scores and acculturative stress levels"
+             "against the presence of suicidal ideation and depression, segregated by gender.")
+
     df_japan_uni = pd.read_csv(path + '\..\/clean_data/japan_student_mental_health.csv')
     df_japan_uni = df_japan_uni.query("Academic == 'Under'")
 
@@ -425,6 +433,10 @@ def compare_universities():
     df_japan_uni = df_japan_uni.query("Academic == 'Under'")
 
     st.header("Comparison between two Universities with similar GDP and Happiness score")
+    st.write("This section provides a comparative study of depression rates between two universities located in Japan and Malaysia,"
+             "countries having similar GDP and Happiness Index. By adjusting the age range, the user can explore the distribution of"
+             "depression instances in the chosen demographic across both universities. Separate bar charts for each university,"
+             "color-coded by gender, are presented side-by-side for a direct comparison.")
     range_of_age = st.slider('Select the age', min_value=17, max_value=29, value=(17, 29))
     filtered_df1 = df_malaysia_uni[(df_malaysia_uni['Age'] >= range_of_age[0]) & (df_malaysia_uni['Age'] <= range_of_age[1])]
     filtered_df2 = df_japan_uni[(df_japan_uni['Age'] >= range_of_age[0]) & (df_japan_uni['Age'] <= range_of_age[1])]
@@ -463,12 +475,12 @@ def main():
         layout="centered",
         initial_sidebar_state="expanded",
         menu_items={
-            'About': "# This is a header. This is an *extremely* cool app!"
+            'About': "This is a comprehensive visual exploration project, focusing on global mental health trends. Using a multitude of visualizations and interactive features, the project aims to provide insights into the mental health landscape across various demographic groups and geographical regions."
         }
     )
     st.markdown('<h1 style="color: black;">Thoughts around the world</h1>', unsafe_allow_html=True)
     #st.title(APP_TITLE)
-    st.subheader("a visual exploration of global mental health")
+    st.subheader("A visual exploration of global mental health")
     generate_happiness_map()
     generate_treemap()
     create_importance_table(df_global_mental_health)
