@@ -1,7 +1,6 @@
 import pandas as pd
 import streamlit as st
-conda install -c plotly plotly_express==0.4.0
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import plotly.express as px
 import json
 import folium
