@@ -3,7 +3,6 @@ channels:
   - conda-forge
   - bokeh
 dependencies:
-  - plotly.express
   - python=3.10
   - pip
   - matplotlib=3.6.3
