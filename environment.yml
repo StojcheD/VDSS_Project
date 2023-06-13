@@ -1,4 +1,4 @@
-name: vdss-st
+name: environment
 channels:
   - conda-forge
   - bokeh
