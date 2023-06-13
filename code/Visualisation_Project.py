@@ -322,8 +322,7 @@ def plot_stacked_barplots(df_malaysia_uni):
 
     st.title("Prevalence of Mental Illnesses across Different University Majors")
 
-    st.write("This section provides two stacked bar plots indicating the distribution of depression, anxiety, and panic attacks among students pursuing different majors."
-             "The first plot covers all majors, whereas the second focuses only on those majors where at least one instance of mental illness has been reported."
+    st.write("This section provides a stacked bar plot indicating the distribution of depression, anxiety, and panic attacks among students pursuing different majors."
              "This breakdown can offer insights into the relationship between study disciplines and mental health conditions.")
 
     # creating the one with all majors
@@ -358,11 +357,8 @@ def plot_stacked_barplots(df_malaysia_uni):
     plt.legend(bars_with_illness, mental_illnesses)
     plt.tight_layout()
 
-    tab1, tab2 = st.tabs(["Every Major", "No Mental Illness"],)
-    with tab1:
-        st.pyplot(fig_all)
-    with tab2:
-        st.pyplot(fig_with_illness)
+
+    st.pyplot(fig_with_illness)
 
     expander = st.expander("See Conclusions")
     expander.write("The distribution shows the mental illness by major of the respondents of the survey.  "
